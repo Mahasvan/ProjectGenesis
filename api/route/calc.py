@@ -3,7 +3,7 @@ import datetime
 from fastapi import APIRouter
 
 from api.service.pretty_response import PrettyJSONResponse
-from api.service.calculations import calculate_change
+from api.service.calculations import calculate_change, round_all_dict
 from model.regression import predict_fields
 
 from model.lstm import predict_aqi
@@ -21,12 +21,15 @@ class Initiative:
 
 @router.post('/fund_recalc')
 async def fund_recalc(initiatives: list[dict]):
+    # print request type and body
+    print("Body: ", initiatives)
+
     now = datetime.datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0)
     time = now.replace(month=now.month + 1, hour=0, minute=0, second=0, microsecond=0)
 
     processed = []
     for initiative in initiatives:
-        features = predict_fields(time, initiative.get("City"))
+        # features = predict_fields(time, initiative.get("City"))
         current = round(predict_aqi(initiative.get("City"), now), 5)
         prediction = round(predict_aqi(initiative.get("City"), time), 5)
 
@@ -39,8 +42,6 @@ async def fund_recalc(initiatives: list[dict]):
             {
                 "Project": initiative.get("Project"),
                 "City": initiative.get("City"),
-                "AQI_Current": current,
-                "AQI_Pred": prediction,
                 "Fund_Current": initiative.get("Funding"),
                 "Weight": calculate_change(current, prediction)
             }
@@ -55,8 +56,9 @@ async def fund_recalc(initiatives: list[dict]):
     for initiative in processed:
         initiative["Fund_Pred"] = initiative.get("Weight") * total_funding
 
-    response = {"response": processed}
-    return PrettyJSONResponse(response)
+    processed = [{k:v for k, v in d.items() if k != "Weight"} for d in processed]
+    processed = [round_all_dict(data) for data in processed]
+    return PrettyJSONResponse(processed)
 
 
 def setup(app):

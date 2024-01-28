@@ -5,6 +5,8 @@ import os
 import requests
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
+from fastapi.middleware.cors import CORSMiddleware
+
 
 from api.service.pretty_response import PrettyJSONResponse
 from api.service.instance_manager import close_running_instance
@@ -15,6 +17,13 @@ with open("config.json") as f:
 close_running_instance(config)
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
 
 
 @app.get('/')

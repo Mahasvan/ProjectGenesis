@@ -5,6 +5,8 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 import datetime
 
+from api.service.calculations import round_all_dict
+
 # Load the dataset
 df = pd.read_csv('model/dataset.csv')
 
@@ -61,13 +63,13 @@ def predict_fields(timestamp, city):
     if df_previous.empty:
         df_previous = df.iloc[0]
 
-    print("Printing city")
-    print(df_previous["City"])
-
-    df_previous["City"] = labels.get(df_previous["City"], 0)
-    thing = {k: df_previous[k] for k in fields}
-    print(thing)
-    return thing
+    df_previous["City"] = df_previous["City"].apply(lambda x: labels[x])
+    prev_values = df_previous.to_dict()
+    prev_values = {k: list(v.values())[0] for k, v in prev_values.items()}
+    del prev_values["time"]
+    del prev_values["Date"]
+    prev_values = round_all_dict(prev_values)
+    return prev_values
 
 
 if __name__ == '__main__':
