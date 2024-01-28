@@ -7,10 +7,17 @@ This project helps to optimize grants and funding to various initiatives and NGO
 - Forecasted AQI
 - Current budget allocated to the initiative
 
+> [!NOTE]  
+> View the Frontend using [This Link]() (WIP). This is included as a submodule here.
+
 ## Methodology
 This software makes use of multiple efficient Machine Learning algorithms to forecast AQI for many cities at the same time.
 - LSTM for AQI Forecasting
 - Logistic Regression for predicting particulate matter and pollutant concentrations
+
+## Funding Recalculation
+
+![Equation](images/img.png)
 
 ## Tech Stack
 - ### Frontend
