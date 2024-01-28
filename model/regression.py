@@ -49,7 +49,7 @@ def get_df_instance(timestamp, max=10, curr=0):
 
 
 # Function to predict the values for each pollutant
-def predict_fields(timestamp, city='Delhi'):
+def predict_fields(timestamp, city):
     # check previous year data
     previous_timestamp = timestamp.replace(year=timestamp.year - 1, hour=0, minute=0, second=0, microsecond=0)
     day = previous_timestamp.day
@@ -62,11 +62,8 @@ def predict_fields(timestamp, city='Delhi'):
         df_previous = df.iloc[0]
     df_previous["City"] = [labels[x] for x in df_previous["City"]]
 
-    thing = [df_previous[k].iloc[0] for k in fields]
-    thing = np.array(thing)
-    print(thing)
-    thing = np.atleast_2d(thing)
-    return thing.reshape((thing.shape[0], 1, thing.shape[1]))
+    thing = {k: df_previous[k].iloc[0] for k in fields}
+    return thing
 
 
 if __name__ == '__main__':

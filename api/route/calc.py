@@ -1,8 +1,12 @@
+import datetime
+
 from fastapi import APIRouter
 
 from api.service.pretty_response import PrettyJSONResponse
 from api.service.calculations import calculate_change
+from model.regression import predict_fields
 
+from model.training.regression import predict
 router = APIRouter()
 prefix = "/calc"
 
@@ -16,14 +20,20 @@ class Initiative:
 
 @router.get('/fund_recalc')
 async def fund_recalc(initiatives: list[dict]):
+    now = datetime.datetime.utcnow()
+    time = now.replace(month=now.month + 1, hour=0, minute=0, second=0, microsecond=0)
+
     processed = []
     for initiative in initiatives:
+        features = predict_fields(time, initiative.get("City"))
+
         processed.append(
             {
-                "name": initiative.get("name"),
-                "aqi_curr": initiative.get("aqi_curr"),
+                "name": initiative.get("Project"),
+                "city": initiative.get("City"),
+                "aqi_curr": "hmm",
                 "aqi_pred": initiative.get("aqi_pred"),
-                "fund_curr": initiative.get("fund_curr"),
+                "fund_curr": initiative.get("Funding"),
                 "weight": calculate_change(initiative.get("aqi_curr"), initiative.get("aqi_pred"))
             }
         )
