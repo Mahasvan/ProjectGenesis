@@ -32,29 +32,26 @@ async def fund_recalc(initiatives: list[dict]):
         # features = predict_fields(time, initiative.get("City"))
         current = round(predict_aqi(initiative.get("City"), now), 5)
         prediction = round(predict_aqi(initiative.get("City"), time), 5)
-
-        print(f"Calculating for {initiative.get('Name')}")
-        print("City:", initiative.get("City"))
-        print("Current AQI: ", current)
-        print("Predicted AQI: ", prediction)
-
+        print("Current: ", current)
+        print("Prediction: ", prediction)
+        print("Ratio: ", calculate_change(current, prediction))
         processed.append(
             {
                 "Project": initiative.get("Project"),
                 "City": initiative.get("City"),
-                "Fund_Current": initiative.get("Funding"),
+                "Current Funding": initiative.get("Funding"),
                 "Weight": calculate_change(current, prediction)
             }
         )
+    print([x["Weight"] for x in processed])
+    total_funding = sum([initiative.get("Current Funding") for initiative in processed])
+    # sum_weights = sum([initiative.get("Weight") for initiative in processed])
+    # mean_weight = sum_weights / len(processed)
+    # for initiative in processed:
+    #     initiative["Weight"] = initiative.get("Weight") / mean_weight
 
-    total_funding = sum([initiative.get("Fund_Current") for initiative in processed])
-    sum_weights = sum([initiative.get("Weight") for initiative in processed])
-    mean_weight = sum_weights / len(processed)
     for initiative in processed:
-        initiative["Weight"] = initiative.get("Weight") / mean_weight
-
-    for initiative in processed:
-        initiative["Fund_Pred"] = initiative.get("Weight") * total_funding
+        initiative["Optimized Funding"] = round(initiative.get("Weight") * initiative.get("Current Funding") + initiative.get("Current Funding"), 2)
 
     processed = [{k:v for k, v in d.items() if k != "Weight"} for d in processed]
     processed = [round_all_dict(data) for data in processed]

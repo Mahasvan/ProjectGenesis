@@ -63,7 +63,10 @@ def predict_fields(timestamp, city):
     if df_previous.empty:
         df_previous = df.iloc[0]
 
-    df_previous["City"] = df_previous["City"].apply(lambda x: labels[x])
+    if isinstance(df_previous["City"], str):
+        df_previous["City"] = labels[df_previous["City"]]
+    else:
+        df_previous["City"] = df_previous["City"].apply(lambda x: labels[x])
     prev_values = df_previous.to_dict()
     prev_values = {k: list(v.values())[0] for k, v in prev_values.items()}
     del prev_values["time"]

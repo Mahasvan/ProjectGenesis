@@ -54,7 +54,7 @@ def pretty_time_from_seconds(time_remaining: int):
     return final_string
 
 
-async def hostinfo():
+def hostinfo():
     response = {
         "os": platform.system(),
         "hostname": socket.gethostname(),
@@ -65,8 +65,7 @@ async def hostinfo():
     }
     return response
 
-
-async def uptime():
+def uptime():
     now_time = time.time()
     seconds = now_time - start_time
     pretty_uptime = pretty_time_from_seconds(int(seconds))
