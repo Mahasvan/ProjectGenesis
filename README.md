@@ -9,7 +9,8 @@
 > - Current budget allocated to the initiative
 
 > [!NOTE]  
-> View the Frontend using [This Link]() (WIP). This is included as a submodule here.
+> View the Frontend using [This Link](https://github.com/aditya20-b/pragyan-frontend). 
+> This is included as a submodule here.
 
 ## Methodology
 This software makes use of multiple efficient Machine Learning algorithms to forecast AQI for many cities at the same time.
