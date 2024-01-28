@@ -1,3 +1,8 @@
 fastapi~=0.109.0
 requests~=2.31.0
 uvicorn
+tensorflow
+keras
+pandas
+numpy
+matplotlib
