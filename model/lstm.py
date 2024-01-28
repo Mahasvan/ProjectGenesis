@@ -3,7 +3,7 @@ import pickle
 
 from model.regression import predict_fields
 
-with open("lstm.pkl", "wb") as f:
+with open("model/model.pickle", "rb") as f:
     model = pickle.load(f)
 
 
