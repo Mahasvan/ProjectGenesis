@@ -14,7 +14,7 @@
 
 ## Methodology
 This software makes use of multiple efficient Machine Learning algorithms to forecast AQI for many cities at the same time.
-- **LSTM** for AQI Forecasting
+- **LSTM** and **XGBoost** for AQI Forecasting
 - **Logistic Regression** for predicting particulate matter and pollutant concentrations
 
 For server-management, **Pathway** is used to stream data from the server to a monitoring structure. 
