@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
@@ -20,7 +21,7 @@ df['day'] = df['Date'].dt.day
 
 df = df.fillna(method='ffill')
 
-fields = ["time", "tavg", "tmin", "tmax", "City", 'PM2.5', 'PM10', 'NO', 'NO2', 'NOx', 'NH3', 'CO', 'SO2', 'O3',
+fields = ["tavg", "tmin", "tmax", "City", 'PM2.5', 'PM10', 'NO', 'NO2', 'NOx', 'NH3', 'CO', 'SO2', 'O3',
           'Benzene', 'Toluene', 'Xylene']
 
 labels = {
@@ -59,11 +60,15 @@ def predict_fields(timestamp, city='Delhi'):
     df_previous = df_previous[df_previous['City'] == city]
     if df_previous.empty:
         df_previous = df.iloc[0]
+    df_previous["City"] = [labels[x] for x in df_previous["City"]]
+
     thing = [df_previous[k].iloc[0] for k in fields]
-    thing[4] = labels[city]
-    return thing
+    thing = np.array(thing)
+    print(thing)
+    thing = np.atleast_2d(thing)
+    return thing.reshape((thing.shape[0], 1, thing.shape[1]))
 
 
 if __name__ == '__main__':
     timestamp = datetime.datetime(2023, 2, 28)
-    print(predict_fields(timestamp))
+    print(list(predict_fields(timestamp)))

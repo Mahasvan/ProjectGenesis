@@ -11,7 +11,7 @@ prefix = "/models"
 
 
 @router.get('/predict_aqi')
-async def predict_aqi(city: str, timestamp: datetime.datetime = datetime.datetime.now()):
+async def aqi(city: str, timestamp: datetime.datetime = datetime.datetime.now()):
     # get prediction for time + 1 month
     new_stamp = timestamp + datetime.timedelta(days=30)
     new_stamp.replace(hour=0, minute=0, second=0, microsecond=0)
