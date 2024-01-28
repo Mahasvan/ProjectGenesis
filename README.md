@@ -3,7 +3,6 @@
 ### A state-of-the-art framework, designed to be primarily used by the Government, or the Headquarters of a large firm or industry.
 
 > [!TIP]
-> Optional information to help a user be more successful.
 > This project helps to optimize grants and funding to various initiatives and NGOs in various cities, depending on the following factors
 > - Current AQI
 > - Forecasted AQI
