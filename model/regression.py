@@ -60,9 +60,13 @@ def predict_fields(timestamp, city):
     df_previous = df_previous[df_previous['City'] == city]
     if df_previous.empty:
         df_previous = df.iloc[0]
-    df_previous["City"] = [labels[x] for x in df_previous["City"]]
 
-    thing = {k: df_previous[k].iloc[0] for k in fields}
+    print("Printing city")
+    print(df_previous["City"])
+
+    df_previous["City"] = labels.get(df_previous["City"], 0)
+    thing = {k: df_previous[k] for k in fields}
+    print(thing)
     return thing
 
 
